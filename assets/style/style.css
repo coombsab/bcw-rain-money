@@ -1,1 +1,15 @@
 /* BASIC STYLES HERE */
+
+.budgets-scrollable {
+  overflow: auto;
+  max-height: 80vh;
+}
+
+p {
+  margin: 0;
+}
+
+
+.text-blue {
+  color: blue;
+}
