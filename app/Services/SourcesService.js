@@ -16,7 +16,6 @@ class SourcesService {
   createSource(formData) {
     let source = new Source(formData)
     appState.sources = [source, ...appState.sources]
-    budgetsService.isPurchased()
     saveState("sources", appState.sources)
   }
 }

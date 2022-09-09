@@ -19,7 +19,7 @@ export class Budget {
       <div class="card elevation-2 my-3 mx-4 ">
         <div class="card-header d-flex justify-content-between ">
           <div class="d-flex gap-3">
-            <input type="checkbox" name="" id="" ${this.purchased ? 'checked' : ''}>
+            <input type="checkbox" onchange="app.budgetsController.toggleBudgetPurchased('${this.id}')" name="" id="" ${this.purchased ? 'checked' : ''}>
             <i class="mdi mdi-television"></i>
             <p>${this.name.toUpperCase()}</p>
           </div>

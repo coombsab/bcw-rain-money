@@ -11,7 +11,6 @@ function _drawBudget() {
 
 export class BudgetsController {
   constructor() {
-    budgetsService.isPurchased()
     _drawBudget()
     appState.on("budgets", _drawBudget)
     appState.on("sources", _drawBudget)
@@ -30,5 +29,9 @@ export class BudgetsController {
     } catch (error) {
       console.error("createBudget", error)
     }
+  }
+
+  toggleBudgetPurchased(budgetId) {
+    budgetsService.toggleBudgetPurchased(budgetId)
   }
 }
