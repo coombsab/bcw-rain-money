@@ -1,59 +1,39 @@
+import { appState } from "../AppState.js"
 import { generateId } from "../Utils/generateId.js"
 
+/**
+ * @param {{name: string, total: number, type: string, id: string, purchased: boolean}} Budget
+ */
 export class Budget {
   constructor(data) {
     this.name = data.name
     this.total = data.total
     this.type = data.type
     this.id = data.id || generateId()
-
+    this.purchased = data.purchased || false
 
   }
-
-
-
-  // TODO change string interpulations , 
 
   get Template() {
     return  /*html*/ ` 
       <div class="card elevation-2 my-3 mx-4 ">
         <div class="card-header d-flex justify-content-between ">
           <div class="d-flex gap-3">
-            <input type="checkbox" name="" id="">
+            <input type="checkbox" name="" id="" ${this.purchased ? 'checked' : ''}>
             <i class="mdi mdi-television"></i>
-            <p>${this.name}</p>
+            <p>${this.name.toUpperCase()}</p>
           </div>
-          <p>$320 of <span class="text-blue fw-bold">$${this.total}</span> </p>
+          <p><span class="${(this.SourcesTotal >= this.total) ? 'text-blue fw-bold' : ''}">$${this.SourcesTotal}</span> of <span class="text-blue fw-bold">$${this.total}</span> </p>
         </div>
         <div class="card-body">
-          <div class="d-flex justify-content-between mb-1">
-            <p>sell told tv</p>
-            <div class="d-flex gap-5">
-              <p>$120</p>
-              <i class="mdi mdi-delete"></i>
-            </div>
-          </div>
-          <div class="d-flex justify-content-between mb-1">
-            <p>sell told tv</p>
-            <div class="d-flex gap-5">
-              <p>$120</p>
-              <i class="mdi mdi-delete"></i>
-            </div>
-          </div>
-          <div class="d-flex justify-content-between mb-1">
-            <p>sell told tv</p>
-            <div class="d-flex gap-5">
-              <p>$120</p>
-              <i class="mdi mdi-delete"></i>
-            </div>
-          </div>
+          ${this.SourcesTemplate}
           <div class="card-footer mt-3">
-            <form class="">
+            <form onsubmit="app.sourcesController.createSource('${this.id}')">
               <label for="name">Add Source</label>
               <div class="d-flex">
                 <input type="text" class="form-control w-30" name="name" required placeholder="Budget Here">
                 <input type="text" class="form-control w-50" name="amount" required placeholder="$">
-                <button class="btn btn-primary px-4">Add</button>
+                <button class="btn btn-primary px-4" type="submit">Add</button>
               </div>
             </form>
           </div>
@@ -61,5 +41,25 @@ export class Budget {
       </div>
     
     `
+  }
+
+  get SourcesTemplate() {
+    let template = ""
+    let filteredSources = this.Sources
+    filteredSources.forEach(source => template += source.Template)
+
+    return template
+  }
+
+  get Sources() {
+    let filteredSources = appState.sources.filter(source => source.budgetId === this.id)
+    return filteredSources
+  }
+
+  get SourcesTotal() {
+    let total = 0
+    let filteredSources = appState.sources.filter(source => source.budgetId === this.id)
+    filteredSources.forEach(source => total += parseInt(source.amount))
+    return total
   }
 }
